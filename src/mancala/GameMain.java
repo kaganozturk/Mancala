@@ -1,5 +1,7 @@
 package mancala;
 
+import java.util.Scanner;
+
 import static mancala.Utils.*;
 
 public class GameMain {
@@ -7,15 +9,43 @@ public class GameMain {
     public static final int NUM_PLAYER = 2;
 
     public static final int NUM_PITS = 6;
-    public static final int NUM_STONES = 5;
+    public static final int NUM_STONES = 4;
+    public static int timeLimit;
+
 
 
     public static void main(String[] args) {
 
-        MancalaGame game = new MancalaGame(true, true);
+
+        boolean players[] = new boolean[NUM_PLAYER];
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < 2; i++) {
+            System.out.println("Select Player " + (i+1));
+            System.out.println("1. Human");
+            System.out.println("2. Computer");
+            int input = scanner.nextInt();
+            while (input != 1 && input != 2){
+                System.out.println("Enter 1 or 2");
+                input = scanner.nextInt();
+            }
+            if (input == 1)
+                players[i] = true;
+            else
+                players[i] = false;
+        }
+
+        if (!players[0] || !players[1]){
+            System.out.println("Enter the time limit for computer in seconds");
+            timeLimit = scanner.nextInt();
+        }
+
+
+
+        MancalaGame game = new MancalaGame(players[0], players[1]);
         int cur_player = 0;
         boolean extraMove;
         int isFinished;
+
 
         while (true)
         {
@@ -23,13 +53,17 @@ public class GameMain {
             extraMove = game.move(cur_player);
             game.board.display();
 
-            isFinished = game.isFinished();
+
+            isFinished = isFinished(game.board);
 
             if (isFinished != -1){
                 System.out.println("END");
-                game.endGameCapture(isFinished);
+                endGameCapture(game.board, isFinished);
+                game.board.display();
                 break;
             }
+
+
 
             if (!extraMove)
                 cur_player = changeSide(cur_player);

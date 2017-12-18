@@ -39,4 +39,34 @@ public class Utils {
         }
         return pit;
     }
+
+
+
+    public static int isFinished(Board board) {
+        int i = 0;
+        int j;
+        for (j = 0; j < NUM_PITS; j++) {
+            if (board.getPit(i, j) != 0)
+                break;
+        }
+
+        if (j == NUM_PITS)
+            return i;
+
+        i = 1;
+        for (j = 0; j < NUM_PITS; j++) {
+            if (board.getPit(i, j) != 0)
+                return -1;
+        }
+        return i;
+    }
+
+
+    public static void endGameCapture(Board board, int side) {
+        side = changeSide(side);
+        for (int i = 0; i < NUM_PITS; i++) {
+            board.setStore(side, board.getPit(side, i));
+            board.setPit(side, i, 0);
+        }
+    }
 }

@@ -17,13 +17,12 @@ public class Human extends Player {
     @Override
     int move() {
 
-        System.out.print("Select pit : ");
+        System.out.print("Selected pit : ");
         int input = scanner.nextInt();
         while (input < 0 || input >= NUM_PITS || board.getPit(p_index, input) == 0){
             System.out.println("Enter a valid number");
             input = scanner.nextInt();
         }
-        //starting from 1
         return input;
     }
 }
